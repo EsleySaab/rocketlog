@@ -47,10 +47,14 @@ class DeliveryLogsController {
       where: {
         id: delivery_id,
       },
+      include: {
+        logs: true,
+        user: { select: { name: true, email: true } },
+      },
     })
 
     if (
-      request.user?.role === "costumer" &&
+      request.user?.role === "customer" &&
       request.user.id !== delivery?.userId
     ) {
       throw new AppError("the user can only view their deliveries", 401)
